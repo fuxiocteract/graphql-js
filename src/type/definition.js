@@ -22,7 +22,7 @@ import type {
   EnumTypeDefinitionNode,
   EnumValueDefinitionNode,
   InputObjectTypeDefinitionNode,
-  TypeExtensionDefinitionNode,
+  ObjectTypeExtensionNode,
   OperationDefinitionNode,
   FieldNode,
   FragmentDefinitionNode,
@@ -427,7 +427,7 @@ export class GraphQLObjectType {
   name: string;
   description: ?string;
   astNode: ?ObjectTypeDefinitionNode;
-  extensionASTNodes: Array<TypeExtensionDefinitionNode>;
+  extensionASTNodes: Array<ObjectTypeExtensionNode>;
   isTypeOf: ?GraphQLIsTypeOfFn<*, *>;
 
   _typeConfig: GraphQLObjectTypeConfig<*, *>;
@@ -608,7 +608,7 @@ export type GraphQLObjectTypeConfig<TSource, TContext> = {
   description?: ?string;
   isIntrospection?: boolean;
   astNode?: ?ObjectTypeDefinitionNode;
-  extensionASTNodes?: ?Array<TypeExtensionDefinitionNode>;
+  extensionASTNodes?: ?Array<ObjectTypeExtensionNode>;
 };
 
 export type GraphQLTypeResolver<TSource, TContext> = (

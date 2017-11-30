@@ -65,7 +65,7 @@ import type {
 
 import type {
   DirectiveLocationEnum
-} from '../type/directives';
+} from '../language/directiveLocation';
 
 import type {
   DocumentNode,
@@ -146,22 +146,22 @@ export function extendSchema(
         }
         typeDefinitionMap[typeName] = def;
         break;
-      case Kind.TYPE_EXTENSION_DEFINITION:
+      case Kind.OBJECT_TYPE_EXTENSION:
         // Sanity check that this type extension exists within the
         // schema's existing types.
-        const extendedTypeName = def.definition.name.value;
+        const extendedTypeName = def.name.value;
         const existingType = schema.getType(extendedTypeName);
         if (!existingType) {
           throw new GraphQLError(
             `Cannot extend type "${extendedTypeName}" because it does not ` +
             'exist in the existing schema.',
-            [ def.definition ]
+            [ def ]
           );
         }
         if (!(existingType instanceof GraphQLObjectType)) {
           throw new GraphQLError(
             `Cannot extend non-object type "${extendedTypeName}".`,
-            [ def.definition ]
+            [ def ]
           );
         }
         let extensions = typeExtensionsMap[extendedTypeName];
@@ -388,7 +388,7 @@ export function extendSchema(
     const extensions = typeExtensionsMap[type.name];
     if (extensions) {
       extensions.forEach(extension => {
-        extension.definition.interfaces.forEach(namedType => {
+        extension.interfaces.forEach(namedType => {
           const interfaceName = namedType.name.value;
           if (interfaces.some(def => def.name === interfaceName)) {
             throw new GraphQLError(
@@ -424,7 +424,7 @@ export function extendSchema(
     const extensions = typeExtensionsMap[type.name];
     if (extensions) {
       extensions.forEach(extension => {
-        extension.definition.fields.forEach(field => {
+        extension.fields.forEach(field => {
           const fieldName = field.name.value;
           if (oldFieldMap[fieldName]) {
             throw new GraphQLError(

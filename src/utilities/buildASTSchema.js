@@ -78,7 +78,7 @@ import {
 
 import type {
   DirectiveLocationEnum
-} from '../type/directives';
+} from '../language/directiveLocation';
 
 import {
   __Schema,
